@@ -26,12 +26,14 @@ print(lag_oppskrift(lager, fruktsalat))
 class Lager:
     def __init__(self):
         self.ingredients = {
-        "eple": 200,
-        "kylling": 100,
-        "melk": 1000,
-        "avocado": 400,
-        "fløte": 200,
-        "kjøttdeig": 800, 
-        "rømme": 150,
-
+            "eple": 200,
+            "kylling": 100,
+            "melk": 1000,
+            "avocado": 400,
+            "fløte": 200,
+            "kjøttdeig": 800, 
+            "rømme": 150,
         }
+    
+    def add_ingredients(navn, mengde):
+        for key, value in range run_recipe_search()
