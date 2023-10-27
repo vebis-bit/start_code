@@ -7,15 +7,29 @@ lager = {"eple": 1000
 
 
 api_key = '92c3bcf84731f6098ecf4e793b53ad1e'
-url = 'https://api.spoonacular.com/recipes/random'
-parameters = {'apiKey': api_key, 'number': 1}
+base_url = 'https://api.edamam.com/api/recipes/v2'
+endpoint = '/search'
+query = 'chicken'  # Endre dette til ditt søkeord
 
-response = requests.get(url, params=parameters)
+# Sett opp parametre for forespørselen
+params = {
+    'q': query,
+    'app_id': 'DIN_APP_ID',  # Erstatt med din app-id hvis nødvendig
+    'app_key': api_key,
+}
 
+# Lag HTTP GET-forespørsel
+response = requests.get(f'{base_url}{endpoint}', params=params)
+
+# Håndter responsen
 if response.status_code == 200:
     data = response.json()
     # Behandle dataene her
-    print(data)
+    for hit in data.get('hits', []):
+        recipe = hit.get('recipe', {})
+        print(f"Oppskrift: {recipe.get('label')}")
+        print(f"Lenke: {recipe.get('url')}")
+        print("----------------------")
 else:
     print(f'Feil ved henting av data. Statuskode: {response.status_code}')
 
