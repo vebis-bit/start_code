@@ -15,7 +15,7 @@ class Lager():
             oppskrifter.append(oppskrift)
         return oppskrifter
 
-    def ut_av_kjoleskap(self, liste, matrett):
+    def inn_av_kjoleskap(self, liste, matrett):
         for i in liste:
             if i['navn'] == matrett:
                 for key, value in i.items():
@@ -24,23 +24,31 @@ class Lager():
                         self.kjøleskap['navn'] =- value
         return self.kjøleskap
     
-    def inn_i_kjøleskap(self, liste, ingrediens):
-        for i in liste:
-            
- 
-
+    def ut_av_kjøleskap(self, liste):
+        oppskriften = self.hente_inn_oppskrifter(liste)
+        handlekurv = {}
+        for oppskrift in oppskriften:
+            for key, value in oppskrift.items():
+                if key == 'navn':
+                    continue
+                else:
+                    if key in self.kjøleskap:
+                        handlekurv[key] = self.kjøleskap[key - value]
+                    else: 
+                        handlekurv[key] = -value                   
+                    if handlekurv[key] < 0:
+                        print(f"Du mangler {abs(handlekurv[key])} gram av {key}")
+                    #else:
+                        print(f"Du har alle ingrediensene for å lage {liste[0]}")
+        return handlekurv
+    
 Herman = Lager()
 print(Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))[0])
+     
+
+print(Herman.ut_av_kjøleskap(run_recipe_search('dinner','no', 'apple')))
 
 
 
-#def lag_oppskrift(lager, oppskrit):
- #   for key,value in oppskrit.items():
-  #      if key in lager:
-   #         lager[key] -= value
-    #    else:
-     #       lager[key] = -value
-    #return lager
-#print(lag_oppskrift(Lager, fruktsalat))
 
 
