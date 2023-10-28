@@ -21,7 +21,7 @@ def run_food_search(food_name):
     results = food_search(food_name)
     return {results[top_search].get('food').get('label') : results[top_search].get('measures')[0]['weight']}
 
-if __name__ == '__main__':
+""" if __name__ == '__main__':
     food_name = input('Enter a food name to search: ')
     food_results = run_food_search(food_name)
 
@@ -29,4 +29,4 @@ if __name__ == '__main__':
         print(f"Food: {food_results}")
         print("----------------------")
     else:
-        print(f"No results found for {food_name}.")
+        print(f"No results found for {food_name}.") """
