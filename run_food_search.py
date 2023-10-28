@@ -17,28 +17,16 @@ def food_search(food_name: str):
     return data.get('hints', [])
 
 def run_food_search(food_name):
+    top_search = 0
     results = food_search(food_name)
-    foods = []
-    for result in results:
-        food = result.get('food', {})
-        foods.append([
-            food.get('label'),
-            food.get('category'),
-            food.get('nutrients', {})
-        ])
-    return foods
+    return {results[top_search].get('food').get('label') : results[top_search].get('measures')[0]['weight']}
 
 if __name__ == '__main__':
     food_name = input('Enter a food name to search: ')
     food_results = run_food_search(food_name)
 
     if food_results:
-        for result in food_results:
-            print(f"Food: {result[0]}")
-            print(f"Category: {result[1]}")
-            print("Nutrients:")
-            for nutrient, value in result[2].items():
-                print(f"  {nutrient}: {value}")
-            print("----------------------")
+        print(f"Food: {food_results}")
+        print("----------------------")
     else:
         print(f"No results found for {food_name}.")
