@@ -1,18 +1,35 @@
-from oppbevaring import *
+from run_recipe_search import run_recipe_search
     
 class Lager():
     def __init__(self):
         self.kjøleskap = {
             "eple":150,
         }
-    def add_ingredients(self,liste):
+    def hente_inn_oppskrifter(self,liste):
+        oppskrifter = []
         for i in range (len(liste)):
+            oppskrift = {}
+            oppskrift['navn'] = liste[i][0]
             for j in liste[i][5]:
-                matvare = j['food']
-                vekt = j['weight']
-                print(vekt, matvare)
+                oppskrift[j['food']] = j['weight']
+            oppskrifter.append(oppskrift)
+        return oppskrifter
 
+    def ut_av_kjoleskap(self, liste, matrett):
+        for i in liste:
+            if i['navn'] == matrett:
+                for key, value in i.items():
+                    self.kjøleskap[key] -= value
+                    if key not in self.kjøleskap:
+                        self.kjøleskap['navn'] =- value
+        return self.kjøleskap
     
+    #def inn_i_kjøleskap()
+ 
+
+Herman = Lager()
+print(Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))[0])
+print(Herman.ut_av_kjoleskap(run_recipe_search('dinner','no','apple')))
 
 
 #def lag_oppskrift(lager, oppskrit):
