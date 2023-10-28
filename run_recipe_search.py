@@ -56,7 +56,7 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
     else:
         health_restriction = None
 
-    results = recipe_search(meal_type, ingredient, health_restriction, 'recipes')
+    results = recipe_search(meal_type, ingredient, health_restriction)
     recepies = []
     for result in results:
         recipe = result['recipe']
@@ -70,5 +70,5 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
     return recepies
 
 if __name__ == '__main__':
-    print(run_recipe_search("breakfeast", "none", "egg"))
+    print(run_recipe_search("breakfeast", "none", "apple"))
     
