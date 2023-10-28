@@ -1,51 +1,80 @@
+from typing import Any
+
 import requests
-lager = {"eple": 1000 
-    ,"banan": 300
-    ,"appelsin": 1000
-    ,"melon": 1000
-}
 
 
-api_key = '92c3bcf84731f6098ecf4e793b53ad1e'
-base_url = 'https://api.edamam.com/api/recipes/v2'
-endpoint = '/search'
-query = 'chicken'  # Endre dette til ditt søkeord
+def recipe_search(meal_type: str, ingredient: str, health_restriction: str):
+    with requests.get(
+        'https://api.edamam.com/api/recipes/v2',
+        headers={'Accept': 'application/json'},
+        params={
+            'app_id': '64a8539d',
+            'app_key': '5b6d901e27fd64a68ff9ac4a59e4321e',
+            'type': 'any',
+            'mealType': meal_type,
+            'health': health_restriction,
+            'q': ingredient,
+        },
+    ) as result:
+        result.raise_for_status()
+        data = result.json()
+    return data['hits']
 
-# Sett opp parametre for forespørselen
-params = {
-    'q': query,
-    'app_id': 'DIN_APP_ID',  # Erstatt med din app-id hvis nødvendig
-    'app_key': api_key,
-}
+def run_recipe_search(has_meal_type, has_restriction, ingredient):
+    #has_meal_type = input('Are you looking for a particular type of meal? ')
+    if has_meal_type == 'yes':
+          meal_type = input(
+              'Select an option from the following list:'
+              '\n - breakfast'
+              '\n - brunch'
+              '\n - lunch'
+              '\n - snack'
+              '\n - teatime'
+              '\n > '
+          )
+    else:
+        meal_type = None
 
-# Lag HTTP GET-forespørsel
-response = requests.get(f'{base_url}{endpoint}', params=params)
+    #has_restriction = input('Do you have a dietary requirement? ')
+    if has_restriction == 'yes':
+        health_restriction = input(
+            'Select an option from the following list:'
+            '\n - vegan'
+            '\n - vegetarian'
+            '\n - paleo'
+            '\n - dairy-free'
+            '\n - gluten-free'
+            '\n - wheat-free'
+            '\n - fat-free'
+            '\n - low-sugar'
+            '\n - egg-free'
+            '\n - peanut-free'
+            '\n - tree-nut-free'
+            '\n - soy-free'
+            '\n - fish-free'
+            '\n - shellfish-free'
+            '\n >'
+        )
+    else:
+        health_restriction = None
 
-# Håndter responsen
-if response.status_code == 200:
-    data = response.json()
-    # Behandle dataene her
-    for hit in data.get('hits', []):
-        recipe = hit.get('recipe', {})
-        print(f"Oppskrift: {recipe.get('label')}")
-        print(f"Lenke: {recipe.get('url')}")
-        print("----------------------")
-else:
-    print(f'Feil ved henting av data. Statuskode: {response.status_code}')
+    #ingredient = input('What ingredient would you like to use? ')
+    results = recipe_search(meal_type, ingredient, health_restriction)
+    recepies = []
+    for result in results:
+        recipe = result['recipe']
+        recepies.append([recipe['label'],
+                         recipe['ingredientLines'],
+                         recipe['calories'],
+                         recipe['dishType'],
+                         recipe['totalTime'],
+                         recipe['ingredients']
+                         ])
+    return recepies
 
 
-fruktsalat = {
-    "eple": 200
-    ,"banan": 100
-    ,"appelsin": 100
-    ,"melon": 100
-}
+if __name__ == '__main__':
+    var = run_recipe_search("breakfeast", "vegan", "egg")
 
-def lag_oppskrift(lager, oppskrit):
-    for key,value in oppskrit.items():
-        if key in lager:
-            lager[key] -= value
-        else:
-            lager[key] = -value
-    return lager
-print(lag_oppskrift(lager, fruktsalat))
+
+    
