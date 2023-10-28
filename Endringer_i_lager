@@ -24,12 +24,14 @@ class Lager():
                         self.kjøleskap['navn'] =- value
         return self.kjøleskap
     
-    #def inn_i_kjøleskap()
+    def inn_i_kjøleskap(self, liste, ingrediens):
+        for i in liste:
+            
  
 
 Herman = Lager()
 print(Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))[0])
-print(Herman.ut_av_kjoleskap(run_recipe_search('dinner','no','apple')))
+
 
 
 #def lag_oppskrift(lager, oppskrit):
