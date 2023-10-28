@@ -62,4 +62,4 @@ def getAbleRecepies():
 
 
 #Skjekke hvilke av oppskriftene man har ingredienser til å lage
-print("Disse oppskriftene har du nok ingredienser til: \n", getAbleRecepies())
+#print("Disse oppskriftene har du nok ingredienser til: \n", getAbleRecepies())

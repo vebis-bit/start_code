@@ -13,9 +13,6 @@ class RadioButtonFrame(customtkinter.CTkFrame):
         self.header = customtkinter.CTkLabel(self, text=self.header_name)
         self.header.grid(row=0, column=0, padx=10, pady=10)
 
-        table = ttk.Treeview(App)
-        table.pack()
-
     def get_value(self):
         """ returns selected value as a string, returns an empty string if nothing selected """
         return self.radio_button_var.get()
