@@ -21,7 +21,6 @@ def recipe_search(meal_type: str, ingredient: str, health_restriction: str):
     return data['hits']
 
 def run_recipe_search(has_meal_type, has_restriction, ingredient):
-    #has_meal_type = input('Are you looking for a particular type of meal? ')
     if has_meal_type == 'yes':
           meal_type = input(
               'Select an option from the following list:'
@@ -35,7 +34,6 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
     else:
         meal_type = None
 
-    #has_restriction = input('Do you have a dietary requirement? ')
     if has_restriction == 'yes':
         health_restriction = input(
             'Select an option from the following list:'
@@ -58,8 +56,7 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
     else:
         health_restriction = None
 
-    #ingredient = input('What ingredient would you like to use? ')
-    results = recipe_search(meal_type, ingredient, health_restriction)
+    results = recipe_search(meal_type, ingredient, health_restriction, 'recipes')
     recepies = []
     for result in results:
         recipe = result['recipe']
@@ -72,9 +69,6 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
                          ])
     return recepies
 
-
 if __name__ == '__main__':
-    var = run_recipe_search("breakfeast", "vegan", "egg")
-
-
+    print(run_recipe_search("breakfeast", "none", "egg"))
     
