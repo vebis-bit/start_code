@@ -2,9 +2,9 @@
 ## FoodManager
 Vi bruker python som backend og SwiftUI som frontend.
 
-![Home](images/home.jpg)
+![Home](images/home.png)
 
-![sugestions](images/sugested.jpg)
+![sugestions](images/sugested.png)
 
 
 
