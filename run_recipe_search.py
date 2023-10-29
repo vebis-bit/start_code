@@ -61,9 +61,10 @@ def run_recipe_search(has_meal_type, has_restriction, ingredient):
     for result in results:
         recipe = result['recipe']
         recepies.append([recipe['label'],
+                         
                          recipe['ingredientLines'],
                          recipe['calories'],
-                         recipe['dishType'],
+                         #recipe['dishType'],
                          recipe['totalTime'],
                          recipe['ingredients']
                          ])
