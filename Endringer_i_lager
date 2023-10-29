@@ -1,68 +1,79 @@
 from run_recipe_search import run_recipe_search
-    
+
 class Lager():
     def __init__(self):
         self.kjøleskap = {
-            "eple":150,
+            "eple": 150,
         }
-    def hente_inn_oppskrifter(self,liste):
+
+    def hente_inn_oppskrifter(self, data):
         oppskrifter = []
-        for i in range (len(liste)):
-            oppskrift = {}
-            oppskrift['navn'] = liste[i][0]
-            for j in liste[i][5]:
-                oppskrift[j['food']] = j['weight']
+        for oppskrift_data in data:
+            oppskrift = {"navn": oppskrift_data[0]}
+            for ingredient_data in oppskrift_data[5]:  # 5th index has the ingredients
+                food_name = ingredient_data['food']
+                food_weight = ingredient_data['weight']
+                oppskrift[food_name] = food_weight
             oppskrifter.append(oppskrift)
         return oppskrifter
 
-    def inn_av_kjoleskap(self,liste, matrett):
-        for i in liste:
-            if i['navn'] == matrett:
-                for key, value in i.items():
-                    self.kjøleskap[key] += value
-                    if key not in self.kjøleskap:
-                        self.kjøleskap['navn'] = value
-        return self.kjøleskap
-    
-    def ut_av_kjøleskap(self, liste):
-        oppskriften = self.hente_inn_oppskrifter(liste)
+    def inn_av_kjoleskap(self, oppskrift):
+        for key, value in oppskrift.items():
+            if key == 'navn':
+                continue
+            if key in self.kjøleskap:
+                self.kjøleskap[key] += value
+            else:
+                self.kjøleskap[key] = value
+
+    def ut_av_kjøleskap(self, oppskrift):
         handlekurv = {}
-        for oppskrift in oppskriften:
-            for key, value in oppskrift.items():
-                if key == 'navn':
-                    continue
+        for key, value in oppskrift.items():
+            if key == 'navn':
+                continue
+            if key in self.kjøleskap:
+                resterende = self.kjøleskap[key] - value
+                if resterende < 0:
+                    handlekurv[key] = abs(resterende)  # bruker abs for å få en positiv verdi
+                    print(f"Du mangler {handlekurv[key]} gram av {key}")
                 else:
-                    if key in self.kjøleskap:
-                        handlekurv[key] = self.kjøleskap[key - value]
-                    else: 
-                        handlekurv[key] = -value 
-                                      
-                    if handlekurv[key] < 0:
-                        print(f"Du mangler {abs(handlekurv[key])} gram av {key}")
-                    else:
-                        print(f"Du har alle ingrediensene for å lage {liste[0]}")
-        if self.sjekk_kjøleskap(handlekurv)[0]:
-            print("Du har alle ingrediensene")
-        else:
-            print("Du mangler noen ingredienser")
+                    handlekurv[key] = 0  # ingenting ekstra kreves, du har nok
+                    print(f"Du har nok av {key}")
+            else:
+                handlekurv[key] = value
+                print(f"Du mangler {handlekurv[key]} gram av {key}")
+
         return handlekurv
-    
-    def sjekk_kjøleskap(self,kjøleskap):
-        liste = []
-        for key, value in kjøleskap.items():
-            if value < 0:
-                liste.append(key)
-        if len(liste) == 0:
-            return True, liste
-        else:
-            return False, liste
-    
+
+    def sjekk_kjøleskap(self, handlekurv):
+        mangler = [key for key, value in handlekurv.items() if value > 0]
+        return (len(mangler) == 0, mangler)
+
+def get_user_input(prompt):
+    svar = input(prompt)
+    return svar.lower() == 'ja'
+
 Herman = Lager()
-print(Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))[0])
-     
-#print(Herman.ut_av_kjøleskap(run_recipe_search('dinner','no', 'apple')[0]))
+oppskrifter = Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))
 
+if oppskrifter:nei
+    oppskrift = oppskrifter[0]
+    print(f"Valgt oppskrift: {oppskrift['navn']}")
+    handlekurv = Herman.ut_av_kjøleskap(oppskrift)
+    kan_lages, manglende_ingredienser = Herman.sjekk_kjøleskap(handlekurv)
 
+    if not kan_lages:
+        print(f"Du mangler: {', '.join(manglende_ingredienser)}")
 
+    if get_user_input("Ønsker du å legge manglende ingredienser i handlekurven og lage retten? (ja/nei): "):
+        for ingrediens, mengde in handlekurv.items():
+            if mengde > 0:
+                if ingrediens in Herman.kjøleskap:
+                    Herman.kjøleskap[ingrediens] -= mengde
+                else:
+                    Herman.kjøleskap[ingrediens] = 0
 
-
+        print("*Ingrediensene er lagt til i handlekurven*")
+        print("Du kan lage retten!")
+    else:
+        print("Du valgte ikke å lage oppskriften.")
