@@ -9,7 +9,8 @@ Vi bruker python som backend og SwiftUI som frontend.
 
 
 ### Team
-- Backend ansvalrig: Herman
+- Backend ansvarlig: Herman
 - API ansvarlig: Vebjørn
 - Frontend ansvarlig: Kristian
 - Design ansvarlig: Julia
+
