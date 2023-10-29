@@ -15,13 +15,13 @@ class Lager():
             oppskrifter.append(oppskrift)
         return oppskrifter
 
-    def inn_av_kjoleskap(self, liste, matrett):
+    def inn_av_kjoleskap(self,liste, matrett):
         for i in liste:
             if i['navn'] == matrett:
                 for key, value in i.items():
-                    self.kjøleskap[key] -= value
+                    self.kjøleskap[key] += value
                     if key not in self.kjøleskap:
-                        self.kjøleskap['navn'] =- value
+                        self.kjøleskap['navn'] = value
         return self.kjøleskap
     
     def ut_av_kjøleskap(self, liste):
@@ -35,18 +35,32 @@ class Lager():
                     if key in self.kjøleskap:
                         handlekurv[key] = self.kjøleskap[key - value]
                     else: 
-                        handlekurv[key] = -value                   
+                        handlekurv[key] = -value 
+                                      
                     if handlekurv[key] < 0:
                         print(f"Du mangler {abs(handlekurv[key])} gram av {key}")
-                    #else:
+                    else:
                         print(f"Du har alle ingrediensene for å lage {liste[0]}")
+        if self.sjekk_kjøleskap(handlekurv)[0]:
+            print("Du har alle ingrediensene")
+        else:
+            print("Du mangler noen ingredienser")
         return handlekurv
+    
+    def sjekk_kjøleskap(self,kjøleskap):
+        liste = []
+        for key, value in kjøleskap.items():
+            if value < 0:
+                liste.append(key)
+        if len(liste) == 0:
+            return True, liste
+        else:
+            return False, liste
     
 Herman = Lager()
 print(Herman.hente_inn_oppskrifter(run_recipe_search('dinner', 'no', 'apple'))[0])
      
-
-print(Herman.ut_av_kjøleskap(run_recipe_search('dinner','no', 'apple')))
+#print(Herman.ut_av_kjøleskap(run_recipe_search('dinner','no', 'apple')[0]))
 
 
 
